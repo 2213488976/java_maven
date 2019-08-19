@@ -83,7 +83,7 @@
 			//1.获取手机号
 			var telephone = $("#telephone").val();
 			//2.定义正则
-			var reg_telephone=/^1\d{10,10}$/;
+			var reg_telephone=/^1[3456789]\d{9}$/;
 			//3.判断,给出提示信息
 			var flag = reg_telephone.test(telephone);
 			if(flag){
@@ -135,6 +135,14 @@
 					//如果全都校验通过,发送ajax请求提交表单
 					$.post("registUserServlet",$(this).serialize(),function (data) {
 						//处理服务器响应的数据
+						if (data.flag){
+							//注册成功,跳转到成功页面
+							location.href="register_ok.html";
+						}else {
+							//注册失败
+							$("#errorMsg").html(data.errorMsg);
+
+						}
 					});
 				}
 				//2.跳转页面
@@ -162,9 +170,9 @@
     				<p>USER REGISTER</p>
     			</div>
     			<div class="rg_form_center">
-					
+					<div id="errorMsg" style="color:red;text-align: center"></div>
 					<!--注册表单-->
-    				<form id="registerForm" action="User">
+    				<form id="registerForm" action="#">
 						<!--提交处理请求的标识符-->
 						<input type="hidden" name="action" value="register">
     					<table style="margin-top: 25px;">
